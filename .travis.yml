@@ -2,5 +2,5 @@ language: bash
 script:
   - echo hello
   - echo Travis CI test in .travis.yml
-  - ./GCD.sh
+  - ./GCD.sh 1071 1029
   
