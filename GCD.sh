@@ -1,29 +1,45 @@
 #! /bin/bash
+num=("$@")
+pre=${#num[@]}-1
+unset num[$pre]
+num=(${num[@]})
 
-if [[ $1 > $2 ]]; then
-    A=$1
-    B=$2
-else
-    B=$1
-    A=$2
-fi
-Aorg=$A
-Borg=$B
-i=0
-R=$(($A % $B))
-while [[ $R > 0 ]]
+while :
 do
-    R=$(($A % $B))
-    printf "%d A:%d, B:%d, R:%d\n" $i $A $B $R
-    if [[ $R >0 ]]; then
-	A=$B
-	B=$R
-    fi
-    
-    if [[ $i > 100 ]]; then
+    max=${#num[@]}
+    for ((i=0;i<$max-1;i++)); do
+        for ((j=0;j<$max-1-$i;j++)); do
+	    if [[ ${num[$j]} < ${num[$j+1]} ]]; then
+		tmp=${num[$j+1]}
+		num[$j+1]=${num[$j]}
+		num[$j]=$tmp
+	    fi
+	done
+    done
+
+    GCD=()
+    for ((i=0;i<$max-1;i++)); do
+	A=${num[$i]}
+	B=${num[$i+1]}
+	Aorg=$A
+	Borg=$B
+	while :
+	do
+	    R=$(($A % $B))
+	    if [ $R == 0 ]; then
+		GCD+=($B)
+		break
+	    else
+		A=$B
+		B=$R
+	    fi
+	done
+    done
+
+    if [[ ${#GCD[@]} == 1 ]]; then
 	break
     fi
-    let i++
+    num=(${GCD[@]})
 done
 
-printf "GCD of %d and %d is %d.\n" $Aorg $Borg $B
+echo ${GCD[0]}
