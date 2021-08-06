@@ -4,7 +4,7 @@ args=("$@")
 # 引数の数をチェック
 
 if [ $# -lt 2 ]; then
-    echo "Over than 2 arguments are necessary." >&2
+    echo "ARGERR : Over than 2 arguments are necessary." >&2
     exit 1
 fi
 
@@ -12,7 +12,7 @@ num=()
 # 引数が整数かチェック
 for i in $(seq $#); do
     if ! expr "${args[$i-1]}" : "[0-9]*$" >&/dev/null; then
-        echo "Only integers can be accepted." >&2
+        echo "TYPEERR : Only integers can be accepted." >&2
         exit 1
     else
         num+=(${args[$i-1]})

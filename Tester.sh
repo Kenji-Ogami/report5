@@ -3,8 +3,9 @@
 test_no=1
 # Test case when there are no arguments.
 test_results=()
-./GCD.sh
-if [[ $? == 1 ]]; then
+err_msg="$(./GCD.sh 2>&1 > /dev/null)"
+if [[ $? == 1 && $err_msg =~ ARGERR ]]; then
+    printf "$err_msg\n"
     printf "Test%02d Pass\n" $test_no
     test_results+=(1)
 else
@@ -14,8 +15,9 @@ fi
 
 let test_no++
 # Test case when there are non integer arguments.
-./GCD.sh "test" "test"
-if [[ $? == 1 ]]; then
+err_msg="$(./GCD.sh "test" "test" 2>&1 > /dev/null)"
+if [[ $? == 1 && $err_msg =~ TYPEERR ]]; then
+    printf "$err_msg\n"
     printf "Test%02d Pass\n" $test_no
     test_results+=(1)
 else
@@ -23,9 +25,8 @@ else
     test_results+=(0)
 fi
 
-let test_no++
-# Test case when there are appropriate arguments.
-# The expectation is integer aside from 1.
+# GCD.shを検証する関数です。GCD.shに与える引数の個数を、指定できます。
+verify(){
 prim_num=($(cat ./prim_num.dat))
 base_sel=${#prim_num[@]}
 base_index=$(($RANDOM % $base_sel))
@@ -34,7 +35,7 @@ base_index=$(($RANDOM % $base_sel))
 base2=${prim_num[$base_index]}
 gcd=$(($base1 * $base2))
 
-arg_num=99
+arg_num=$1
 mult_max=5
 
 args=()
@@ -67,6 +68,18 @@ else
     printf "Base1 : %d, Base2 : %d, GCD : %d, Ans : %d\n" $base1 $base2 $gcd $ans
     test_results+=(0)
 fi
+}
+
+
+# Test case when there are appropriate arguments.
+# The expectation is integer aside from 1.
+# This test case is only 2 arguments.
+let test_no++
+verify 2
+
+# This test case is 99 arguments.
+let test_no++
+verify 99
 
 let test_no++
 # Test case when there are appropriate number of arguments
