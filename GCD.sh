@@ -1,5 +1,11 @@
 #! /bin/bash
+
 num=("$@")
+if [ ${#num[@]} -lt 3 ]; then
+    echo "Over 2 arguments are necessary."
+    exit 1
+fi
+
 pre=${#num[@]}-1
 unset num[$pre]
 num=(${num[@]})
