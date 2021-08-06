@@ -2,7 +2,7 @@
 
 num=("$@")
 if [ ${#num[@]} -lt 3 ]; then
-    echo "Over 2 arguments are necessary."
+    echo "Over than 2 arguments are necessary."
     exit 0
 fi
 
