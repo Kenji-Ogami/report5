@@ -3,7 +3,8 @@
 test_no=1
 # Test case when there are no arguments.
 test_results=()
-if [[ $(./GCD.sh) == 1 ]]; then
+./GCD.sh
+if [[ $? == 1 ]]; then
     printf "Test%02d Pass\n" $test_no
     test_results+=(1)
 else
