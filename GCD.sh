@@ -2,8 +2,8 @@
 
 num=("$@")
 if [ ${#num[@]} -lt 3 ]; then
-    echo "Over than 2 arguments are necessary."
-    exit 0
+    echo "Over than 2 arguments are necessary." >&2
+    exit 1
 fi
 
 pre=${#num[@]}-1

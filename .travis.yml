@@ -1,5 +1,4 @@
 language: bash
 script:
-  - ./GCD.sh
   - ./Tester.sh
   
